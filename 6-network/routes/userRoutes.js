@@ -8,6 +8,7 @@ module.exports = class UserRoutes {
         const users = UserController.getAllUsers();
         res.statusCode = 200;
         res.setHeader("Content-Type", "application/json");
+        res.set('Cache-Control', 'public, max-age=3600');
         res.end(JSON.stringify(users));
     }
 
@@ -45,6 +46,7 @@ module.exports = class UserRoutes {
         if(userHobbies){
             res.statusCode = 200;
             res.setHeader("Content-Type", "application/json");
+            res.set('Cache-Control', 'private, max-age=3600');
             res.end(JSON.stringify({ data: userHobbies, error: null }));
             return;
         }
