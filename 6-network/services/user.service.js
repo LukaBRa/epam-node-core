@@ -1,11 +1,11 @@
 const uuid = require("uuid");
 
-module.exports = class UserController {
+module.exports = class UserService {
 
     static users = [];
     static userHobbies = [];
 
-    static getAllUsers = () => UserController.users;
+    static getAllUsers = () => UserService.users;
 
     static getUser = (id) => {
         return this.users.find(user => user.user.id === id);
@@ -32,8 +32,8 @@ module.exports = class UserController {
                 user: `/api/users/${userId}`
             }
         }
-        UserController.users.push(newUser);
-        UserController.userHobbies.push(newHobbies);
+        UserService.users.push(newUser);
+        UserService.userHobbies.push(newHobbies);
         return newUser;
     }
 

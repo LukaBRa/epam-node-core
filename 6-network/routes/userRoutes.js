@@ -1,11 +1,11 @@
 const parseRequestBody = require("../utils/parseRequestBody");
-const UserController = require("../controllers/userController");
+const UserService = require("../services/user.service");
 
 
 module.exports = class UserRoutes {
 
     static getAllUsers = (req, res) => {
-        const users = UserController.getAllUsers();
+        const users = UserService.getAllUsers();
         res.statusCode = 200;
         res.setHeader("Content-Type", "application/json");
         res.set('Cache-Control', 'public, max-age=3600');
@@ -15,7 +15,7 @@ module.exports = class UserRoutes {
     static createUser = async (req, res) => {
         const respBody = await parseRequestBody(req);
 
-        const createdUser = UserController.createUser(respBody);
+        const createdUser = UserService.createUser(respBody);
 
         res.statusCode = 201;
         res.setHeader("Content-Type", "application/json");
@@ -24,7 +24,7 @@ module.exports = class UserRoutes {
 
     static getUser = (req, res) => {
         const userId = req.url.split("/")[3];
-        const user = UserController.getUser(userId);
+        const user = UserService.getUser(userId);
         
         if(!user){
             res.statusCode = 404;
@@ -41,7 +41,7 @@ module.exports = class UserRoutes {
 
     static getUserHobbies = (req, res) => {
         const userId = req.url.split("/")[3];
-        const userHobbies = UserController.getUserHobbies(userId);
+        const userHobbies = UserService.getUserHobbies(userId);
 
         if(userHobbies){
             res.statusCode = 200;
@@ -59,7 +59,7 @@ module.exports = class UserRoutes {
 
     static deleteUser = (req, res) => {
         const userId = req.url.split("/")[3];
-        const user = UserController.deleteUser();
+        const user = UserService.deleteUser();
     
         if(!user) {
             res.statusCode = 404;
@@ -76,7 +76,7 @@ module.exports = class UserRoutes {
     static updateUserHobbies = async (req, res) => {
         const userId = req.url.split("/")[3];
         const newHobbies = await parseRequestBody(req);
-        const user = UserController.updateUserHobbies(userId, newHobbies);
+        const user = UserService.updateUserHobbies(userId, newHobbies);
 
         if(!user) {
             res.statusCode = 404;
