@@ -1,0 +1,23 @@
+{
+  "name": "6-network",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "pm2 start index.js --name ngmp-network-app",
+    "stop": "pm2 stop ngmp-network-app",
+    "restart": "pm2 restart ngmp-network-app",
+    "nodemon": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.0",
+    "pm2": "^5.3.1"
+  },
+  "dependencies": {
+    "uuid": "^9.0.1"
+  }
+}
