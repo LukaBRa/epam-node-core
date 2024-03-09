@@ -1,28 +1,23 @@
 import { Request, Response } from "express";
 import { ProductRepository } from "../repositories/product.repository";
 import type { IProductEntity } from "../types/IProductEntity";
+import { response } from "../utils/response";
 
 export class ProductController {
 
     static findAll(req: Request, res: Response) {
         const products: IProductEntity[] = ProductRepository.findAll();
-        res.statusCode = 200;
-        res.setHeader("Content-Type", "application/json");
-        res.send(JSON.stringify({ data: products, error: null }));
+        response(res, 200, products, null);
     }
 
     static findOne(req: Request<{ productId: string }>, res: Response) {
         const { productId } = req.params;
         const product = ProductRepository.findOne(productId);
         if(!product) {
-            res.statusCode = 404;
-            res.setHeader("Content-Type", "application/json");
-            res.send(JSON.stringify({ data: null, error: "No product with such id" }));
+            response(res, 404, null, "No product with such id.");
         }
 
-        res.statusCode = 200;
-        res.setHeader("Content-Type", "application/json");
-        res.send(JSON.stringify({ data: product, error: null }));
+        response(res, 200, product, null);
     }
 
 }
