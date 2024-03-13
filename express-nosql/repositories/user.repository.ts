@@ -4,7 +4,7 @@ import User from "../models/User.model";
 
 export class UserRepository {
 
-    static async createUser({ email, password, role }: IRegisterBody) {
+    static async createUser({ email, password, role }: IRegisterBody): Promise<IUserEntity | null> {
 
         try {
             const user = new User({
@@ -21,9 +21,9 @@ export class UserRepository {
 
     }
 
-    static findOne(id: string) {
+    static async findOne(id: string): Promise<IUserEntity | null> {
         try {
-            const user = User.findOne({ _id: id });
+            const user = await User.findOne({ _id: id });
             return user;
         } catch (error) {
             console.log(error);
@@ -31,7 +31,7 @@ export class UserRepository {
         }
     }
 
-    static async findAll() {
+    static async findAll(): Promise<IUserEntity[] | null> {
 
         try {
             const users = await User.find();

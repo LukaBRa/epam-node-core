@@ -7,7 +7,7 @@ import { IProductEntity } from "../types/IProductEntity";
 export class CartRepository {
 
 
-    static async findOrCreate(id: string) {
+    static async findOrCreate(id: string): Promise<ICartEntity | null> {
         const cart = await CartModel.findOne({ user: id });
         if(!cart){
             try {
@@ -72,7 +72,7 @@ export class CartRepository {
         return cartSnapshot;
     };
 
-    static async emptyCart(id: string) {
+    static async emptyCart(id: string): Promise<Boolean> {
         
         try {
             await CartModel.updateOne(

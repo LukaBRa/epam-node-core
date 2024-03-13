@@ -3,7 +3,7 @@ import type { IProductEntity } from "../types/IProductEntity";
 
 export class ProductRepository {
 
-    static async create({ title, description, price }: IProductEntity) {
+    static async create({ title, description, price }: IProductEntity): Promise< IProductEntity | null > {
         try {
             const product = new ProductModel({
                 title: title,
@@ -27,7 +27,7 @@ export class ProductRepository {
         }
     }
 
-    static async findOne(id: string) {
+    static async findOne(id: string): Promise<IProductEntity | null> {
         try {
             const product = await ProductModel.findOne({ _id: id });
             return product;

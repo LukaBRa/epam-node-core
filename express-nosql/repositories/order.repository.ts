@@ -1,13 +1,12 @@
 import { CartModel } from "../models/Cart.model";
 import OrderModel from "../models/Order.model";
-import UserModel from "../models/User.model";
+import { IOrderEntity } from "../types/IOrderEntity";
 
 
 export class OrderRepository {
 
-    static async createOrder(userId: string) {
+    static async createOrder(userId: string): Promise<IOrderEntity | null> {
 
-        const user = await UserModel.findOne({ _id: userId });
         const cart = await CartModel.findOne({ user: userId });
         
         if(cart) {
@@ -40,6 +39,8 @@ export class OrderRepository {
                 console.log(error);
                 return null;
             }
+        } else {
+            return null;
         }
         
     }
