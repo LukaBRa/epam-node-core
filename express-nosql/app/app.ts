@@ -17,7 +17,6 @@ export function createApp(): Express {
 
     const app: Express = express();
 
-    app.use(bodyParser.json());
     app.use("/api/products", productRouter);
     app.use("/api/profile/cart", cartRouter);
     app.use("/api/auth", authRouter);
