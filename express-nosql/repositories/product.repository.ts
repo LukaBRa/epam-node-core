@@ -10,10 +10,9 @@ export class ProductRepository {
                 description: description,
                 price: price
             })
-            const createdProduct = await product.save();
-            return createdProduct;
+            return product;
         } catch (error) {
-            console.log(error);
+            console.error("Failed to create product in repository.", error);
             return null;
         }
     }
@@ -23,6 +22,7 @@ export class ProductRepository {
             const products = await ProductModel.find();
             return products;
         } catch (error) {
+            console.error("Failed to find all products in repository.", error);
             return null;
         }
     }
@@ -32,7 +32,7 @@ export class ProductRepository {
             const product = await ProductModel.findOne({ _id: id });
             return product;
         } catch (error) {
-            console.log(error);
+            console.log("Failed to find a product in repository.", error);
             return null;
         }
     }

@@ -1,25 +1,27 @@
-import dotenv from "dotenv";
-import express from "express";
-import { Express, Request, Response } from "express";
-import productRouter from "./routes/productRouter";
-import cartRouter from "./routes/cartRouter";
-import authRouter from "./routes/authRouter";
-import bodyParser = require("body-parser");
 import { connectToMongoDB } from "./config/database";
+import { createApp } from "./app/app";
+import http from "http";
+import dotenv from "dotenv";
+
 
 dotenv.config();
-
-const app: Express = express();
 const PORT = process.env.PORT;
 const uri: string = process.env.MONGO_URI as string;
 
-connectToMongoDB(uri);
+const server = http.createServer(createApp());
 
-app.use(bodyParser.json());
-app.use("/api/products", productRouter);
-app.use("/api/profile/cart", cartRouter);
-app.use("/api/auth", authRouter);
-
-app.listen(PORT, () => {
-    console.log(`Server running at port ${PORT}`);
+server.listen(PORT, async () => {
+    try {
+        if(await connectToMongoDB(uri)){
+            console.log("Successfully connected to DB");
+            console.log(`Server running at port ${PORT}`);
+        } else {
+            console.log("Failed to connect to DB, server will stop now.");
+            server.close();
+        }
+    } catch (error) {
+        console.error("Failed to connect to DB", error);
+        server.close();
+    }
+    
 });

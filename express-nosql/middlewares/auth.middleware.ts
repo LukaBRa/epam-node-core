@@ -4,9 +4,7 @@ import { UserRepository } from "../repositories/user.repository";
 export async function auth(req: Request, res: Response, next: NextFunction) {
 
     if(!req.headers['x-user-id']) {
-        res.statusCode = 403;
-        res.setHeader("Content-Type", "application/json");
-        res.send({ data: null, error: "You must be authorized user" });
+        res.status(403).json({ data: null, error: "You must be authorized user." })
         return;
     }
     
@@ -14,9 +12,7 @@ export async function auth(req: Request, res: Response, next: NextFunction) {
     const user = await UserRepository.findOne(typeof userId === "string" ? userId : "" );
 
     if(!user) {
-        res.statusCode = 401;
-        res.setHeader("Content-Type", "application/json");
-        res.send({ data: null, error: "User is not authorized" });
+        res.status(401).json({ data: null, error: "User is not authorized." });
         return;
     }
 
