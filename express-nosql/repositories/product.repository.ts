@@ -1,5 +1,7 @@
 import { ProductModel } from "../models/Product.model";
 import type { IProductEntity } from "../types/IProductEntity";
+import { paginate } from "../utils/paginate";
+import { PaginatedResult } from "../types/PaginateTypes";
 
 export class ProductRepository {
 
@@ -17,9 +19,11 @@ export class ProductRepository {
         }
     }
 
-    static async findAll(): Promise<IProductEntity[] | null> {
+    static async findAll(): Promise<PaginatedResult<IProductEntity> | null> {
         try {
-            const products = await ProductModel.find();
+            const page = 1;
+            const perPage = 10;
+            const products = await paginate(ProductModel.find({}, { password: 0 } ), { page, perPage });
             return products;
         } catch (error) {
             console.error("Failed to find all products in repository.", error);

@@ -6,9 +6,10 @@ export enum UserRolesEnum {
 }
 
 export interface IUserEntity extends Document {
+    id: string,
     email: string,
     password: string,
     role: UserRolesEnum | string,
     createdAt: Date,
-    updateAt: Date
+    updatedAt: Date
 }

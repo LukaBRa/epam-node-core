@@ -72,11 +72,11 @@ export class CartController {
             const actionResult = await CartRepository.emptyCart(typeof userId === "string" ? userId : "");
 
             if(!actionResult){
-                res.status(500).json({ data: null, error: { message: "Internal server error." } });
+                res.status(500).json({ error: { message: "Internal server error." } });
                 return;
             }
 
-            res.status(200).json({ data: { success: true }, error: null });
+            res.status(200).json({ data: { success: true } });
         } catch (error) {
             catchError(res, "Failed to empty cart.", error);
         }

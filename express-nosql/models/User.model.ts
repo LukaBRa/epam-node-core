@@ -1,11 +1,11 @@
 import mongoose, { Schema } from "mongoose";
 import { IUserEntity } from "../types/IUserEntity";
-import { CartModel } from "./Cart.model";
 
-const UserSchema: Schema = new Schema({
+const UserSchema: Schema = new Schema<IUserEntity>({
+    id: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
-    cart: { type: Schema.Types.ObjectId, ref: "Cart" },
+    role:  { type: String, required: true },
     createdAt: { type: Date, required: true, default: Date.now },
     updatedAt: { type: Date, required: true, default: Date.now }
 });

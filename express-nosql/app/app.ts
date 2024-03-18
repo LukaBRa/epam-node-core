@@ -3,6 +3,15 @@ import productRouter from "../routes/productRouter";
 import cartRouter from "../routes/cartRouter";
 import authRouter from "../routes/authRouter";
 import bodyParser from "body-parser";
+import { ICurrentUser } from "../types/ICurrentUser";
+
+declare global {
+    namespace Express {
+        interface Request {
+            user: ICurrentUser
+        }
+    }
+}
 
 export function createApp(): Express {
 
