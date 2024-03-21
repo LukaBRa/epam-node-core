@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 
-export const connectToMongoDB = async (uri: string): Promise<boolean> => {
+dotenv.config();
+const uri: string = `mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}`;
+
+export const connectToMongoDB = async (): Promise<boolean> => {
 
     try {
         await mongoose.connect(uri);
