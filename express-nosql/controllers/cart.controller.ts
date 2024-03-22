@@ -10,15 +10,12 @@ export class CartController {
 
     static async findOrCreate(req: Request, res: Response) {
         try {
-            const userId: string | string[] | undefined = req.headers['x-user-id'];
-            if(userId){
-                const cart = await CartRepository.findOrCreate(typeof userId === "string" ? userId : "");
-                if(cart){
-                    res.status(200).json({ data: cart, error: null });
-                    return;
-                }
+            const userId: string = req.user.id;
+            const cart = await CartRepository.findOrCreate(typeof userId === "string" ? userId : "");
+            if(cart){
+                res.status(200).json({ data: cart, error: null });
+                return;
             }
-            res.status(500).json({ data: null, error: { message: "Internal server error" } });
         } catch (error) {
             catchError(res, "Failed to find or create cart.", error);
         }
@@ -26,7 +23,7 @@ export class CartController {
 
     static async updateCart(req: Request, res: Response) {
         try {
-            const userId = req.headers["x-user-id"];
+            const userId: string = req.user.id;
             const errors = validationResult(req);
             if(!errors.isEmpty()) {
                 res.status(400).json({ data: null, errors });
@@ -51,7 +48,7 @@ export class CartController {
 
     static async checkout(req: Request, res: Response) {
         try {
-            const userId = req.headers['x-user-id'];
+            const userId: string = req.user.id;
 
             const newOrder = await OrderRepository.createOrder(typeof userId === "string" ? userId : "");
 
@@ -68,7 +65,7 @@ export class CartController {
 
     static async emptyCart(req: Request, res: Response) {
         try {
-            const userId = req.headers['x-user-id'];
+            const userId: string = req.user.id;
             const actionResult = await CartRepository.emptyCart(typeof userId === "string" ? userId : "");
 
             if(!actionResult){
