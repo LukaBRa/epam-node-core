@@ -1,21 +1,34 @@
 import { Request, Response, NextFunction } from "express";
-import { UserRepository } from "../repositories/user.repository";
+import * as jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import { ICurrentUser } from "../types/ICurrentUser";
+
+dotenv.config();
 
 export async function auth(req: Request, res: Response, next: NextFunction) {
 
-    if(!req.headers['x-user-id']) {
-        res.status(403).json({ data: null, error: "You must be authorized user." })
-        return;
-    }
-    
-    const userId: string | string[] = req.headers["x-user-id"];
-    const user = await UserRepository.findOne(typeof userId === "string" ? userId : "" );
+    const authHeader = req.headers.authorization;
 
-    if(!user) {
-        res.status(401).json({ data: null, error: "User is not authorized." });
-        return;
+    if(!authHeader) {
+        return res.status(401).json({ error: "User is not authorized." });
     }
 
-    next();
+    const [tokenType, token] = authHeader.split(' ');
+
+    if(tokenType !== "Bearer") {
+        return res.status(403).send("You must be authorized user.");
+    }
+
+    try{
+
+        const user = jwt.verify(token, process.env.TOKEN_KEY!) as ICurrentUser;
+
+        req.user = user;
+
+    } catch (error) {
+        return res.status(401).json({ error: "User is not authorized." });
+    }
+
+    return next();
 
 }

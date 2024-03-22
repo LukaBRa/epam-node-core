@@ -18,11 +18,11 @@ export class ProductController {
             const product = await ProductRepository.findOne(req.params.productId);
         
             if(!product) {
-                res.status(404).json({ data: null, error: { message: "Product not found." } });
+                res.status(404).json({ error: { message: "Product not found." } });
                 return;
             }
 
-            res.status(200).json({ data: product, error: null });
+            res.status(200).json({ data: product });
         } catch (error) {
             catchError(res, "Failed to find product.", error);
         }
