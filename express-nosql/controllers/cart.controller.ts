@@ -13,7 +13,7 @@ export class CartController {
             const userId: string = req.user.id;
             const cart = await CartRepository.findOrCreate(typeof userId === "string" ? userId : "");
             if(cart){
-                res.status(200).json({ data: cart, error: null });
+                res.status(200).json({ data: cart });
                 return;
             }
         } catch (error) {
@@ -26,21 +26,21 @@ export class CartController {
             const userId: string = req.user.id;
             const errors = validationResult(req);
             if(!errors.isEmpty()) {
-                res.status(400).json({ data: null, errors });
+                res.status(400).json({ errors });
                 return;
             }
             const cartSnapshot = await CartRepository.updateCart(req.body, typeof userId === "string" ? userId : "");
             if(!cartSnapshot) {
                 if(cartSnapshot === false){
                     // If cartSnapshot is false it means that product is not found
-                    res.status(400).json({ data: null, error: { message: "Product is not valid." } });
+                    res.status(400).json({ error: { message: "Product is not valid." } });
                 }else{
                     // If cartSnapshot is null it means that cart was not found
-                    res.status(400).json({ data: null, error: { message: "Cart was not found." } });
+                    res.status(400).json({ error: { message: "Cart was not found." } });
                 }
                 return;
             }
-            res.status(200).json({ data: cartSnapshot, error: null });
+            res.status(200).json({ data: cartSnapshot });
         } catch (error) {
             catchError(res, "Failed to update cart.", error);
         }
@@ -53,11 +53,11 @@ export class CartController {
             const newOrder = await OrderRepository.createOrder(typeof userId === "string" ? userId : "");
 
             if(!newOrder) {
-                res.status(500).json({ data: null, error: { message: "Internal server error." } });
+                res.status(500).json({ error: { message: "Internal server error." } });
                 return;
             }
 
-            res.status(200).json({ data: newOrder, error: null });
+            res.status(200).json({ data: newOrder });
         } catch (error) {
             catchError(res, "Failed to create order.", error);
         }
