@@ -1,4 +1,6 @@
-export interface IProductEntity {
+import { Document } from "mongoose";
+
+export interface IProductEntity extends Document {
     id: string,
     title: string,
     description: string,
