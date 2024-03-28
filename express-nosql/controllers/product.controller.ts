@@ -7,7 +7,7 @@ export class ProductController {
     static async findAll(req: Request, res: Response) {
         try {
             const products = await ProductRepository.findAll();
-            res.status(200).json({ data: products, error: null });
+            res.status(200).json({ data: products });
         } catch (error) {
             catchError(res, "Failed to find all products.", error);
         }
